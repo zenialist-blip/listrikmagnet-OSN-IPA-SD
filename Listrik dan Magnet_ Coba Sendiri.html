@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Listrik dan Magnet: Coba Sendiri</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef5f3;--grid:#d3e3df;--card:#fff;--ink:#1d2b4a;--mut:#56627c;--line:#1d2b4a;--blue:#2f6fd0;--red:#d94a3d;--grn:#2e9b6a;--yel:#f2b632;--soft:#e6eefb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121a2b;--grid:#1d2842;--card:#1a2339;--ink:#e8eefc;--mut:#9fb0d0;--line:#e8eefc;--blue:#6aa3ff;--red:#ff7d6e;--grn:#52d29b;--yel:#ffcf5c;--soft:#243050}}
+:root[data-theme=dark]{--bg:#121a2b;--grid:#1d2842;--card:#1a2339;--ink:#e8eefc;--mut:#9fb0d0;--line:#e8eefc;--blue:#6aa3ff;--red:#ff7d6e;--grn:#52d29b;--yel:#ffcf5c;--soft:#243050}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:400 16px/1.55 Lexend,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 14px 96px}
+h1{font-size:1.7rem;margin:8px 0 4px;line-height:1.2}
+.sub{color:var(--mut);margin:0 0 16px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+nav a{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:2px 12px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.9rem;cursor:pointer}
+nav a.on{background:var(--yel);color:#1d2b4a}
+section{display:none;background:var(--card);border:2px solid var(--line);border-radius:6px 18px 6px 18px;padding:16px;box-shadow:4px 4px 0 var(--line)}
+section.on{display:block}
+h2{font-size:1.15rem;margin:0 0 2px}
+.tag{color:var(--mut);font-size:.8rem;margin:0 0 8px}
+.k{background:var(--soft);border-left:5px solid var(--blue);padding:8px 10px;margin:8px 0;border-radius:0 8px 8px 0}
+.q{border:2px dashed var(--mut);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:.92rem}
+.q b{display:block;margin-bottom:2px}
+svg{width:100%;height:auto;display:block;background:var(--soft);border-radius:10px}
+svg text{font-family:Lexend,sans-serif;fill:var(--ink);font-size:11px}
+label{display:block;font-weight:600;margin:10px 0 2px}
+input[type=range]{width:100%;accent-color:var(--blue);height:32px}
+.out{font-weight:600;background:var(--soft);border-radius:8px;padding:8px 10px;margin-top:6px}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+button{font:600 .9rem Lexend,sans-serif;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:6px 12px;cursor:pointer;min-height:40px}
+button.on{background:var(--yel);color:#1d2b4a}
+details{margin-top:10px}summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details p{margin:6px 0 0}
+.good{color:var(--grn)}.bad{color:var(--red)}
+.ln{stroke:var(--line);stroke-width:2;fill:none}
+.fm{background:var(--soft);border-left:5px solid var(--grn);border-radius:0 8px 8px 0;padding:6px 10px;margin:6px 0;font:600 .95rem/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+.pg{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--bg);border-top:2px solid var(--line);padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px))}
+.pg div{max-width:640px;margin:auto;display:flex;gap:8px;align-items:center}.pg button{flex:1}.pg span{flex:0 0 auto;font-weight:600;color:var(--mut);font-size:.85rem}.pg button:disabled{opacity:.35}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><main>
+<h1>Listrik dan Magnet: Coba Sendiri</h1>
+<p class="sub">Geser, tekan, dan lihat apa yang berubah. Satu halaman satu soal.</p>
+<nav id="nv"></nav><div id="ms"></div></main>
+<div class="pg"><div><button id="pv">Sebelumnya</button><span id="pc"></span><button id="nx">Berikutnya</button></div></div>
+<script>
+const $=i=>document.getElementById(i),NS="http://www.w3.org/2000/svg";
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function bind(id,f){const r=$(id+'r');const u=()=>{$(id+'v').textContent=r.value;f(+r.value)};r.oninput=u;u()}
+const C=(id,l,mn,mx,st,v)=>`<label>${l}: <span id="${id}v"></span></label><input id="${id}r" type="range" min="${mn}" max="${mx}" step="${st}" value="${v}">`;
+const O=id=>`<div class="out" id="${id}"></div>`;
+const anims=[];(function L(){anims.forEach(f=>f());requestAnimationFrame(L)})();
+const T=x=>+x.toFixed(2);
+const S=[
+{n:1,t:"Gaya antar muatan",tag:"Hukum Coulomb, 2025 Final no. 44",
+k:"Muatan makin besar, tarik-tolaknya makin kuat. Jarak makin jauh, gayanya melemah, dan lemahnya tajam: jarak ×2 bikin gaya jadi seperempat.",
+q:"Q1 digandakan dan jarak digandakan. Gaya baru dibanding gaya lama? A. 4× lebih besar B. 2× lebih besar C. setengahnya D. sama",
+c:`<svg viewBox="0 0 320 130"><g id="a1"></g></svg>`+C('p1','Muatan Q1 (kali lipat)',1,4,1,1)+C('p1b','Jarak (kali lipat)',1,3,1,1)+`<div class="row"><button id="p1s">Pakai angka soal (×2 dan ×2)</button></div>`+O('p1o'),
+a:"Q1 ×2 membuat gaya ×2. Jarak ×2 membuat gaya ÷(2×2) = ÷4. Gabung: 2 ÷ 4 = ½. Jawaban <b>C</b>.",
+r:"F = k × Q1 × Q2 ÷ r²\nGaya baru ÷ lama = (2 × 1) ÷ (2 × 2) = ½\nKenapa r kuadrat? Pengaruh muatan menyebar di permukaan bola. Makin jauh, bolanya makin besar, jadi pengaruhnya makin tipis."},
+{n:2,t:"Kompor listrik jadi panas",tag:"Efek Joule, 2025 Final no. 47",
+k:"Arus itu elektron yang berjalan. Di kawat berhambatan besar, elektron sering tabrakan dan tabrakan itu jadi panas. Kabel biasa hambatannya kecil, jadi tetap dingin.",
+q:"Mengapa kompor listrik mengubah listrik jadi panas? A. jadi radiasi kuat B. pemanas berhambatan tinggi, listrik jadi panas saat dialiri arus C. hambatan sangat kecil D. pakai magnet",
+c:`<svg viewBox="0 0 320 110"><g id="a2"></g></svg>`+C('p2','Arus',1,5,1,2)+C('p2b','Hambatan elemen kompor (Ω)',1,20,1,10)+O('p2o'),
+a:"Pemanas dibuat dari bahan hambatan tinggi, jadi energi listrik berubah jadi panas saat arus lewat. Jawaban <b>B</b>.",
+r:"Energi W = V × I × t, dan V = I × R\nJadi W = I² × R × t, daya panas P = I² × R\nArus sama di kabel dan elemen, jadi yang R-nya besar paling panas."},
+{n:4,t:"Dua resistor paralel",tag:"Rangkaian paralel, 2025 Final no. 54",
+k:"Di jalur paralel, tiap cabang dapat tegangan penuh sumber. Arus tiap cabang dihitung sendiri, lalu dijumlah.",
+q:"R1 = 3 Ω dan R2 = 6 Ω paralel ke 6 V. Arus total? A. 1 A B. 3 A C. 1,5 A D. 2 A",
+c:`<svg viewBox="0 0 320 150"><g id="a4"></g></svg>`+C('p4','R1 (Ω)',1,12,1,3)+C('p4b','R2 (Ω)',1,12,1,6)+O('p4o'),
+a:"I1 = 6 ÷ 3 = 2 A. I2 = 6 ÷ 6 = 1 A. Total 2 + 1 = <b>3 A</b> (B).",
+r:"Tegangan tiap cabang sama (V)\nI = I1 + I2 = V/R1 + V/R2\nI = V/Rp, jadi 1/Rp = 1/R1 + 1/R2\nUntuk soal ini: Rp = 2 Ω, I = 6 ÷ 2 = 3 A"},
+{n:8,t:"Balon digosok kain wool",tag:"Listrik statis, 2025 Kab. no. 32",
+k:"Yang bisa pindah cuma elektron (muatan negatif). Proton terkunci di dalam inti. Benda yang kelebihan elektron jadi negatif, yang kekurangan jadi positif.",
+q:"Balon dan kain wool jadi bermuatan karena ... A. elektron wool pindah ke balon B. proton balon pindah ke wool C. elektron balon pindah ke wool D. proton wool pindah ke balon",
+c:`<svg viewBox="0 0 320 150"><g id="a8"></g></svg>`+C('p8','Elektron yang pindah',0,6,1,0)+`<div class="row"><button id="p8w">Dekatkan ke dinding</button></div>`+O('p8o'),
+a:"Elektron pindah dari kain wool ke balon. Balon jadi negatif, wool jadi positif. Jawaban <b>A</b>.",
+r:"Muatan benda = (jumlah proton − jumlah elektron) × e\nBalon dapat n elektron: muatan −n\nWool kehilangan n elektron: muatan +n\nJumlah total tetap nol, muatan tidak hilang, cuma pindah.\nDi dinding: balon (−) menarik muatan + dinding ke permukaan dan mendorong yang − menjauh, jadi balon menempel."},
+{n:9,t:"Percobaan Oersted",tag:"Listrik dan magnet, 2025 Kab. no. 33",
+k:"Hans Oersted menemukan: kawat yang dialiri arus bisa menggerakkan jarum kompas. Artinya arus listrik membuat magnet.",
+q:"Gambar mana yang menunjukkan percobaan Oersted? A. batang bermuatan digantung B. tumpukan besi di atas ember C. kompas mengelilingi kawat berarus D. magnet digerakkan di kumparan",
+c:`<svg viewBox="0 0 320 150"><g id="a9"></g></svg><div class="row"><button id="p9a" class="on">Arus mati</button><button id="p9b">Arus nyala</button><button id="p9c">Balik arah arus</button></div>`+O('p9o'),
+a:"Kompas yang mengelilingi kawat berarus ada di gambar C. D itu percobaan Faraday (magnet menghasilkan arus), kebalikan Oersted. Jawaban <b>C</b>.",
+r:"Medan magnet kawat lurus: B = μ0 × I ÷ (2π × r)\nArus makin besar atau jarak makin dekat, medan makin kuat.\nArah medan: kaidah tangan kanan. Ibu jari searah arus, jari melingkar menunjukkan arah medan.\nGambar ini disederhanakan: jarum diarahkan sejajar lingkaran medan."},
+{n:10,t:"Partikel lewat dua plat",tag:"Muatan di medan listrik, 2025 Kab. no. 34",
+k:"Beda muatan saling tarik, sama muatan saling tolak. Partikel tanpa muatan tidak dibelokkan sama sekali.",
+q:"Plat atas (+), plat bawah (−). Pasangan lintasan dan partikel? A. I-e, II-p, III-n B. III-p, II-e, I-n C. II-n, I-e, III-p D. II-n, III-e, I-p",
+c:`<svg viewBox="0 0 320 150"><g id="a10"></g></svg><div class="row"><button id="p10e" class="on">Elektron (−)</button><button id="p10p">Proton (+)</button><button id="p10n">Neutron (0)</button></div>`+O('p10o'),
+a:"Neutron lurus (II). Elektron (−) ditarik plat atas (+) lewat lintasan I. Proton (+) ditarik plat bawah (−) lewat lintasan III. Jawaban <b>C</b>.",
+r:"Gaya pada muatan: F = q × E\nMedan E mengarah dari + ke −.\nq positif: gaya searah E, ke plat negatif.\nq negatif: gaya berlawanan E, ke plat positif.\nq nol: gaya nol, lurus."},
+{n:12,t:"Seri bertemu paralel",tag:"Hambatan total, 2025 Kab. no. 55",
+k:"Selesaikan bagian paralel dulu supaya jadi satu kotak, baru jumlahkan yang seri. Paralel selalu membuat hambatan jadi lebih kecil.",
+q:"Semua hambatan bernilai R: satu seri, dua paralel, satu seri. Hambatan total? A. 1,5R B. 2,5R C. 3R D. 4R",
+c:`<svg viewBox="0 0 320 130"><g id="a12"></g></svg>`+C('p12','Nilai R (Ω)',1,10,1,4)+`<div class="row"><button id="p12s">Sederhanakan paralel</button></div>`+O('p12o'),
+a:"Dua R paralel = R/2. Lalu R + R/2 + R = <b>2,5 R</b> (B).",
+r:"Seri: arus sama, V = V1 + V2 = I·R1 + I·R2, jadi R = R1 + R2\nParalel dua R sama: 1/Rp = 1/R + 1/R = 2/R, jadi Rp = R/2\nTotal = R + R/2 + R = 2,5R"},
+{n:42,t:"Magnet dipotong",tag:"Magnet permanen, 2023 no. 44",
+k:"Magnet selalu punya dua kutub sekaligus. Dipotong sekecil apa pun, tiap potongan jadi magnet baru lengkap dengan utara dan selatan.",
+q:"Which statement about permanent magnets is FALSE? A. N pole attracted to S pole B. All magnets have a magnetic field C. Field lines outside go N to S D. Cut in half, one piece is N and the other S",
+c:`<svg viewBox="0 0 320 90"><g id="a42"></g></svg>`+C('p42','Jumlah potongan',0,3,1,0)+O('p42o'),
+a:"D yang salah. Magnet dipotong dua menghasilkan dua magnet, masing-masing punya kutub N dan S. Jawaban <b>D</b>.",
+r:"Magnet isinya magnet-magnet mungil (domain) yang searah.\nDipotong, tiap potongan masih berisi domain searah, jadi tetap punya dua kutub.\nKutub utara saja atau selatan saja belum pernah ditemukan."},
+{n:43,t:"Mencari hambatan yang hilang",tag:"Hukum Ohm, 2023 no. 45",
+k:"Arus ditahan oleh jumlah semua hambatan di jalur seri. Tegangan sumber dibagi ke tiap resistor.",
+q:"R1 = 2 Ω seri dengan R2, sumber 12 V, arus 2 A. R2 = ? A. 2 Ω B. 3 Ω C. 4 Ω D. 5 Ω",
+c:`<svg viewBox="0 0 320 110"><g id="a43"></g></svg>`+C('p43','R2 (Ω)',1,8,1,1)+O('p43o'),
+a:"R total = 12 ÷ 2 = 6 Ω. R2 = 6 − 2 = <b>4 Ω</b> (C).",
+r:"V = I × R, jadi R = V ÷ I\nR total = R1 + R2 = 12 ÷ 2 = 6\nR2 = 6 − 2 = 4 Ω\nCek: V1 = 2×2 = 4 V, V2 = 2×4 = 8 V, jumlah 12 V."},
+{n:71,t:"Tebak R dari hambatan total",tag:"Seri paralel, 2021 no. 46",
+k:"Hitung mundur: kurangi bagian seri dulu, sisanya adalah paralel. Coba-coba nilai R sampai totalnya pas 8 Ω.",
+q:"Total 8 Ω. Susunan: 4 Ω seri, lalu paralel (cabang atas R + 3 Ω, cabang bawah 2 + 4 Ω). R = ? A. 3 Ω B. 4 Ω C. 6 Ω D. 9 Ω",
+c:`<svg viewBox="0 0 320 170"><g id="a71"></g></svg>`+C('p71','Coba R (Ω)',1,12,1,3)+O('p71o'),
+a:"Paralel harus 4 Ω (8 − 4). Cabang bawah 6 Ω, jadi cabang atas harus 12 Ω, sehingga R = 12 − 3 = <b>9 Ω</b> (D). Cek gambar asli ya, pembacaan dari teks ekstraksi.",
+r:"1/4 = 1/x + 1/6\n1/x = 1/4 − 1/6 = 1/12, jadi x = 12\nx = R + 3, jadi R = 9 Ω"}
+];
+const nv=$('nv'),ms=$('ms');
+S.forEach(s=>{nv.insertAdjacentHTML('beforeend',`<a data-n="${s.n}">${s.n}</a>`);
+ms.insertAdjacentHTML('beforeend',`<section id="s${s.n}" data-n="${s.n}"><h2>Soal ${s.n}: ${s.t}</h2><p class="tag">${s.tag}</p><div class="k">${s.k}</div><div class="q"><b>Soal</b>${s.q}</div>${s.c}<details><summary>Lihat jawaban</summary><p>${s.a}</p></details><details><summary>Rumusnya dari mana?</summary><div class="fm">${s.r}</div></details></section>`)});
+
+/* 1 */
+function d1(){const q=+$('p1r').value,d=+$('p1br').value,F=q/(d*d),r=10+q*5,x1=80,x2=80+d*55,Ln=Math.max(6,Math.min(50,34*F));
+const ar=(x,s)=>`<line x1="${x}" y1="60" x2="${x+s*Ln}" y2="60" stroke="var(--red)" stroke-width="5"/><polygon points="${x+s*Ln},60 ${x+s*(Ln-10)},52 ${x+s*(Ln-10)},68" fill="var(--red)"/>`;
+$('a1').innerHTML=`<line x1="${x1}" y1="105" x2="${x2}" y2="105" class="ln"/><text x="${(x1+x2)/2}" y="122" text-anchor="middle">jarak ${d}r</text><circle cx="${x1}" cy="60" r="${r}" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text x="${x1}" y="64" text-anchor="middle">+${q}q</text><circle cx="${x2}" cy="60" r="16" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text x="${x2}" y="64" text-anchor="middle">+q</text>`+ar(x1-r-2,-1)+ar(x2+18,1);
+$('p1o').innerHTML=`Gaya = ${q} ÷ (${d}×${d}) = <b>${T(F)} kali</b> gaya awal. ${F==.5?'<span class="good">Ini jawaban soal!</span>':''}`}
+bind('p1',d1);bind('p1b',d1);$('p1s').onclick=()=>{$('p1r').value=2;$('p1br').value=2;d1();$('p1v').textContent=2;$('p1bv').textContent=2};
+
+/* 2 */
+{const g=$('a2');g.innerHTML=`<rect x="10" y="38" width="300" height="24" fill="#9aa4b5" stroke="var(--line)" stroke-width="2"/><rect x="120" y="38" width="90" height="24" fill="#6b7488" stroke="var(--line)" stroke-width="2"/><rect id="h1" x="10" y="38" width="110" height="24" fill="var(--red)" opacity="0"/><rect id="h2" x="120" y="38" width="90" height="24" fill="var(--red)" opacity="0"/><rect id="h3" x="210" y="38" width="100" height="24" fill="var(--red)" opacity="0"/><g id="d2"></g><text x="65" y="85" text-anchor="middle">kabel</text><text x="165" y="85" text-anchor="middle">elemen kompor</text><text x="260" y="85" text-anchor="middle">kabel</text>`;
+const dd=$('d2'),ds=[];for(let i=0;i<14;i++)ds.push({e:el('circle',{r:3.5,fill:'var(--blue)'},dd),x:i*22});
+let I=2,R=10;const u=()=>{I=+$('p2r').value;R=+$('p2br').value;const k=I*I,pk=k*1,pe=k*R;$('h1').setAttribute('opacity',Math.min(.9,pk/250));$('h3').setAttribute('opacity',Math.min(.9,pk/250));$('h2').setAttribute('opacity',Math.min(.9,pe/250));
+$('p2o').innerHTML=`Panas kabel: ${I}²×1 = ${pk}. Panas elemen: ${I}²×${R} = <b class="bad">${pe}</b>. Elemen ${T(pe/pk)}× lebih panas.`};
+bind('p2',u);bind('p2b',u);
+anims.push(()=>ds.forEach(p=>{p.x+=I*.5;if(p.x>310)p.x=10;const hot=p.x>120&&p.x<210;p.e.setAttribute('cx',p.x);p.e.setAttribute('cy',50+(hot?(Math.random()-.5)*Math.min(18,R*.9):0))}))}
+
+/* 4 */
+{const g=$('a4');g.innerHTML=`<g id="d4"></g><path class="ln" d="M30 45V105M290 45V105"/><line x1="10" y1="75" x2="30" y2="75" class="ln"/><rect x="2" y="64" width="16" height="22" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text x="10" y="102" text-anchor="middle">6 V</text><path class="ln" d="M30 45H290M30 105H290"/><rect x="130" y="33" width="60" height="24" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><rect x="130" y="93" width="60" height="24" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><text id="t41" x="160" y="49" text-anchor="middle"></text><text id="t42" x="160" y="109" text-anchor="middle"></text><text x="300" y="140" text-anchor="end">makin ramai titik = makin besar arus</text>`;
+const dd=$('d4'),ds=[];for(let r=0;r<2;r++)for(let i=0;i<8;i++)ds.push({r,x:30+i*32,e:el('circle',{r:3.5,fill:'var(--blue)',cy:r?105:45},dd)});
+let s1=2,s2=1;const u=()=>{const a=+$('p4r').value,b=+$('p4br').value;s1=6/a;s2=6/b;$('t41').textContent=a+' Ω';$('t42').textContent=b+' Ω';$('p4o').innerHTML=`I1 = 6÷${a} = ${T(s1)} A. I2 = 6÷${b} = ${T(s2)} A. Total = <b>${T(s1+s2)} A</b>. ${a==3&&b==6?'<span class="good">Ini soalnya!</span>':''}`};bind('p4',u);bind('p4b',u);
+anims.push(()=>ds.forEach(p=>{p.x+=(p.r?s2:s1)*.5;if(p.x>290)p.x=30;p.e.setAttribute('cx',p.x)}))}
+
+/* 8 */
+{const g=$('a8');let wall=0,n=0;const els=[];
+g.innerHTML=`<rect x="20" y="40" width="70" height="80" rx="6" fill="#c0576a" stroke="var(--line)" stroke-width="2"/><text x="55" y="135" text-anchor="middle">kain wool</text><circle id="bl" cx="200" cy="75" r="45" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><rect id="wl" x="304" y="0" width="16" height="150" fill="#9aa4b5" style="display:none"/><g id="wm"></g><text id="lb" x="200" y="145" text-anchor="middle"></text><text id="lw" x="55" y="30" text-anchor="middle"></text>`;
+const es=[];for(let i=0;i<6;i++){const gg=el('g',{},g),c=el('circle',{r:7,fill:'var(--blue)'},gg),t=el('text',{'text-anchor':'middle',y:4,style:'fill:#fff;font-weight:600'},gg);t.textContent='−';es.push({g:gg,x:30+(i%3)*22,y:62+Math.floor(i/3)*32})}
+const bx=()=>wall?250:200;
+const tg=i=>i<n?{x:bx()+34*Math.cos(Math.PI+(i-2.5)*.42),y:75+34*Math.sin(Math.PI+(i-2.5)*.42)}:{x:35+(i%3)*22,y:62+Math.floor(i/3)*32};
+const u=()=>{n=+$('p8r').value;$('bl').setAttribute('cx',bx());$('lb').setAttribute('x',bx());$('lb').textContent=n?'balon −'+n:'balon netral';$('lw').textContent=n?'wool +'+n:'wool netral';$('wl').style.display=wall?'':'none';
+$('wm').innerHTML=wall&&n?'<text x="300" y="50" text-anchor="end">+</text><text x="300" y="75" text-anchor="end">+</text><text x="300" y="100" text-anchor="end">+</text>':'';
+$('p8o').innerHTML=!n?'Belum digosok. Geser untuk memindahkan elektron.':wall?'Balon (−) menarik muatan (+) di dinding, jadi <span class="good">menempel</span>.':`Wool kehilangan ${n} elektron jadi <b>positif</b>. Balon dapat ${n} elektron jadi <b>negatif</b>.`};
+bind('p8',u);$('p8w').onclick=()=>{wall=!wall;$('p8w').className=wall?'on':'';u()};
+anims.push(()=>es.forEach((e,i)=>{const t=tg(i);e.x+=(t.x-e.x)*.12;e.y+=(t.y-e.y)*.12;e.g.setAttribute('transform',`translate(${e.x} ${e.y})`)}))}
+
+/* 9 */
+{const g=$('a9'),P=[[160,24,-90],[160,126,90],[80,75,180],[240,75,0]];let on=0,dir=1;const nd=[];
+g.innerHTML=`<circle cx="160" cy="75" r="26" fill="none" stroke="var(--mut)" stroke-dasharray="4" stroke-width="2"/><circle cx="160" cy="75" r="9" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><g id="cm"></g><text id="wt" x="160" y="146" text-anchor="middle"></text>`;
+P.forEach(p=>{const gg=el('g',{transform:`translate(${p[0]} ${p[1]})`},$('cm'));el('circle',{r:18,fill:'var(--card)',stroke:'var(--line)','stroke-width':2},gg);const n=el('g',{},gg);el('polygon',{points:'0,-14 5,0 -5,0',fill:'var(--red)'},n);el('polygon',{points:'0,14 5,0 -5,0',fill:'#9aa4b5'},n);nd.push({n,a:0})});
+const w=$('wt'),sw=(a,d)=>{on=a;dir=d;['p9a','p9b','p9c'].forEach(i=>$(i).className='');$(a?d>0?'p9b':'p9c':'p9a').className='on';
+g.querySelector('circle:nth-of-type(2)').setAttribute('fill',on?'var(--yel)':'var(--card)');
+w.textContent=on?(dir>0?'arus menuju kita (titik)':'arus menjauh dari kita (silang)'):'tanpa arus';
+$('p9o').innerHTML=on?'Jarum kompas <span class="good">menyimpang</span> mengikuti lingkaran. Arus membuat magnet!':'Semua jarum menunjuk utara-selatan bumi.'};
+$('p9a').onclick=()=>sw(0,1);$('p9b').onclick=()=>sw(1,1);$('p9c').onclick=()=>sw(1,-1);sw(0,1);
+anims.push(()=>nd.forEach((o,i)=>{const t=on?P[i][2]+(dir<0?180:0):0;let d=((t-o.a+540)%360)-180;o.a+=d*.1;o.n.setAttribute('transform',`rotate(${o.a})`)}))}
+
+/* 10 */
+{const g=$('a10');let sel='e',t=0;
+g.innerHTML=`<rect x="40" y="14" width="240" height="6" fill="var(--red)"/><rect x="40" y="130" width="240" height="6" fill="var(--blue)"/><text x="160" y="11" text-anchor="middle">plat + (atas)</text><text x="160" y="148" text-anchor="middle">plat − (bawah)</text><path d="M40 75Q160 75 280 28M40 75H280M40 75Q160 75 280 122" fill="none" stroke="var(--mut)" stroke-dasharray="4" stroke-width="1.5"/><text x="284" y="32">I</text><text x="284" y="79">II</text><text x="284" y="126">III</text><circle id="pp" r="8" stroke="var(--line)" stroke-width="2"/><text id="pl" text-anchor="middle" style="fill:#fff;font-weight:600"></text>`;
+const info={e:['var(--blue)','e','Elektron (−) ditarik plat + : lintasan I',-1,95],p:['var(--red)','p','Proton (+) ditarik plat − : lintasan III',1,50],n:['#9aa4b5','n','Neutron (0) tidak dibelokkan: lintasan II',0,0]};
+const set=k=>{sel=k;['e','p','n'].forEach(i=>$('p10'+i).className=i==k?'on':'');$('p10o').innerHTML=info[k][2]};
+['e','p','n'].forEach(k=>$('p10'+k).onclick=()=>set(k));set('e');
+anims.push(()=>{t=(t+.006)%1.15;const q=Math.min(t,1),i=info[sel],x=40+q*240,y=75+i[3]*Math.min(47,i[4]*q*q*.8*1.2);const c=$('pp');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill',i[0]);const l=$('pl');l.setAttribute('x',x);l.setAttribute('y',y+3);l.textContent=i[1]})}
+
+/* 12 */
+{const g=$('a12');let simp=0;
+g.innerHTML=`<path class="ln" d="M10 65H40M90 65H125M195 65H225M275 65H310"/><rect x="40" y="52" width="50" height="26" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><rect x="225" y="52" width="50" height="26" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><g id="gp"><path class="ln" d="M125 65V30H195V65M125 65V100H195V65"/><rect x="135" y="18" width="50" height="24" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><rect x="135" y="88" width="50" height="24" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text id="ta" x="160" y="34" text-anchor="middle"></text><text id="tb" x="160" y="104" text-anchor="middle"></text></g><g id="gs"><rect x="125" y="52" width="70" height="26" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text id="tc" x="160" y="69" text-anchor="middle"></text></g><text id="t1" x="65" y="69" text-anchor="middle"></text><text id="t3" x="250" y="69" text-anchor="middle"></text>`;
+const u=()=>{const R=+$('p12r').value;$('gp').style.display=simp?'none':'';$('gs').style.display=simp?'':'none';$('ta').textContent=$('tb').textContent=R+' Ω';$('t1').textContent=$('t3').textContent=R+' Ω';$('tc').textContent=T(R/2)+' Ω';
+$('p12o').innerHTML=simp?`${R} + ${T(R/2)} + ${R} = <b>${T(2.5*R)} Ω</b> = 2,5 × ${R}`:'Dua kotak kuning paralel. Tekan tombol untuk menggabungkannya.'};
+bind('p12',u);$('p12s').onclick=()=>{simp=!simp;$('p12s').className=simp?'on':'';$('p12s').textContent=simp?'Kembalikan':'Sederhanakan paralel';u()}}
+
+/* 42 */
+bind('p42',k=>{const n=k+1,gap=10,w=(260-gap*k)/n;let h='';for(let i=0;i<n;i++){const x=30+i*(w+gap);h+=`<rect x="${x}" y="20" width="${w/2}" height="40" fill="var(--red)" stroke="var(--line)" stroke-width="2"/><rect x="${x+w/2}" y="20" width="${w/2}" height="40" fill="var(--blue)" stroke="var(--line)" stroke-width="2"/><text x="${x+w/4}" y="45" text-anchor="middle" style="fill:#fff;font-weight:600">U</text><text x="${x+w*.75}" y="45" text-anchor="middle" style="fill:#fff;font-weight:600">S</text>`}
+$('a42').innerHTML=h+`<text x="160" y="82" text-anchor="middle">${n} magnet, ${n} kutub U dan ${n} kutub S</text>`;
+$('p42o').innerHTML=k?`Dipotong ${k} kali jadi ${n} magnet. <span class="good">Tiap potongan tetap punya U dan S.</span>`:'Satu magnet utuh. Geser untuk memotongnya.'});
+
+/* 43 */
+bind('p43',r2=>{const I=12/(2+r2),v1=I*2,v2=I*r2,k=260/12;
+$('a43').innerHTML=`<rect x="30" y="20" width="${v1*k}" height="30" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><rect x="${30+v1*k}" y="20" width="${v2*k}" height="30" fill="var(--blue)" stroke="var(--line)" stroke-width="2"/><text x="30" y="68">V1 = ${T(v1)} V (R1 = 2 Ω)</text><text x="290" y="84" text-anchor="end">V2 = ${T(v2)} V (R2 = ${r2} Ω)</text><text x="160" y="105" text-anchor="middle">total selalu 12 V</text>`;
+$('p43o').innerHTML=`Arus = 12 ÷ (2 + ${r2}) = <b>${T(I)} A</b>. ${I==2?'<span class="good">Pas 2 A, ini jawabannya (4 Ω)!</span>':I>2?'Arus kebesaran, naikkan R2.':'Arus kekecilan, turunkan R2.'}`});
+
+/* 71 */
+bind('p71',R=>{const a=R+3,pr=a*6/(a+6),tot=4+pr,box=(x,y,w,t,f)=>`<rect x="${x}" y="${y}" width="${w}" height="24" fill="${f||'var(--card)'}" stroke="var(--line)" stroke-width="2"/><text x="${x+w/2}" y="${y+16}" text-anchor="middle">${t}</text>`;
+$('a71').innerHTML=`<path class="ln" d="M5 55H25M75 55H110M110 20V90M110 20H120M110 90H120M250 20H260V90H250M260 55H315"/>`+box(25,43,50,'4 Ω')+box(120,8,50,R+' Ω','var(--yel)')+box(170,8,80,'3 Ω')+box(120,78,60,'2 Ω')+box(180,78,70,'4 Ω')+`<rect x="20" y="130" width="${tot*20}" height="14" fill="${Math.abs(tot-8)<.01?'var(--grn)':'var(--blue)'}" stroke="var(--line)" stroke-width="2"/><line x1="180" y1="124" x2="180" y2="150" stroke="var(--red)" stroke-width="3"/><text x="180" y="163" text-anchor="middle">target 8 Ω</text>`;
+$('p71o').innerHTML=`Cabang atas ${R}+3 = ${a} Ω, cabang bawah 6 Ω, paralel ${T(pr)} Ω. Total 4 + ${T(pr)} = <b>${T(tot)} Ω</b>. ${Math.abs(tot-8)<.01?'<span class="good">Pas 8 Ω! R = 9 Ω.</span>':tot>8?'Kebesaran, kecilkan R.':'Kekecilan, besarkan R.'}`});
+
+/* pager */
+const secs=[...document.querySelectorAll('section')],ch=[...nv.children];let cur=0;
+function go(i){cur=Math.max(0,Math.min(secs.length-1,i));secs.forEach((s,k)=>s.classList.toggle('on',k==cur));ch.forEach((a,k)=>a.classList.toggle('on',k==cur));$('pc').textContent=(cur+1)+' / '+secs.length;$('pv').disabled=cur==0;$('nx').disabled=cur==secs.length-1;history.replaceState(null,'','#s'+secs[cur].dataset.n);window.scrollTo(0,0)}
+$('pv').onclick=()=>go(cur-1);$('nx').onclick=()=>go(cur+1);ch.forEach((a,k)=>a.onclick=()=>go(k));
+go(Math.max(0,secs.findIndex(s=>'#s'+s.dataset.n==location.hash)));
+</script></body></html>
